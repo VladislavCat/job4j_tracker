@@ -1,4 +1,4 @@
-package ru.job4j.oop;
+package ru.job4j.tracker.oop;
 
 public class Student {
     public static void main(String[] args) {
