@@ -3,8 +3,9 @@ package ru.job4j.tracker.inheritance;
 public class Engineer extends Profession {
     private String fieldOfScience;
 
-    public Engineer(String fieldOfScience) {
-        super("Физ-мат");
+    public Engineer(String name, String surname, String educ, String birthday,
+                    String fieldOfScience) {
+        super(name, surname, educ, birthday);
         this.fieldOfScience = fieldOfScience;
     }
 

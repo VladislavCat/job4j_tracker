@@ -3,8 +3,9 @@ package ru.job4j.tracker.inheritance;
 public class Dantist extends Doctor {
     private int numberOfRemovedTeeth;
 
-    public Dantist(int i) {
-        super(18);
+    public Dantist(String name, String surname, String educ, String birthday,
+                   int numberOfPatientsInMount, int i) {
+        super(name, surname, educ, birthday, numberOfPatientsInMount);
         numberOfRemovedTeeth = i;
     }
 
