@@ -15,8 +15,4 @@ public class Battery {
         another.load += this.getLoad();
         this.load = 0;
     }
-
-    public static void main(String[] args) {
-
-    }
 }
