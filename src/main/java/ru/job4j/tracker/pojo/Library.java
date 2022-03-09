@@ -14,19 +14,19 @@ public class Library {
         array[0] = array[3];
         array[3] = tmp;
         showBook(array);
-        showBook(array, cleanCode);
+        showBook(array, "Clean code");
     }
 
     public static void showBook(Book[] array) {
         for (Book j : array) {
-            System.out.println("Книга под название: " + j.getName() + "- число страниц - "
+            System.out.println("Книга под названием: " + j.getName() + "- число страниц - "
                     + j.getNumberOfPages());
         } System.out.println("----------");
     }
 
-    public static void showBook(Book[] array, Book book) {
+    public static void showBook(Book[] array, String name) {
         for (Book j : array) {
-            if (book.equals(j)) {
+            if (name.equals(j.getName())) {
                 System.out.println("Книга под название: " + j.getName() + "- число страниц - "
                         + j.getNumberOfPages());
 
