@@ -15,7 +15,7 @@ public class PointTest {
     }
 
     @Test
-    public void when000and5105to10() {
+    public void when123and345to3dot46() {
         Point a1 = new Point(1, 2, 3);
         Point a2 = new Point(3, 4, 5);
         double expected = 3.46;
