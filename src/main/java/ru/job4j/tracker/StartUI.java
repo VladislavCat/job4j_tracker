@@ -50,12 +50,15 @@ public class StartUI {
                 System.out.print("Enter name: ");
                 String name = scanner.nextLine();
                 Item item = new Item(name);
-                tracker.replace(id, item);
-                System.out.println("Item replaced!");
+                if (tracker.replace(id, item)) {
+                    System.out.println("Заявка заменена");
+                } else {
+                    System.out.println("Ошибка замены заявки");
+                }
             } else {
                 System.out.println("Пользователь выбрал: " + select);
             }
-            Thread.sleep(3000);
+            Thread.sleep(2500);
         }
     }
 
