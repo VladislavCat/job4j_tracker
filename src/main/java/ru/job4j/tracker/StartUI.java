@@ -1,11 +1,11 @@
 package ru.job4j.tracker;
 
-import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class StartUI {
 
-    public void init(Scanner scanner, Tracker tracker) {
+    public void init(Scanner scanner, Tracker tracker) throws InterruptedException {
         boolean run = true;
         while (run) {
             snowMenu();
@@ -36,9 +36,26 @@ public class StartUI {
                 } else {
                     System.out.println("Хранилище еще не содержит заявок");
                 }
+            } else if (select == 2) {
+                System.out.println("--- Edit item ---");
+                System.out.println("Enter id: ");
+                int id;
+                try {
+                    id = scanner.nextInt();
+                    scanner.nextLine();
+                } catch (InputMismatchException e) {
+                    System.out.println("Id заявки состоит из чисел.");
+                    continue;
+                }
+                System.out.print("Enter name: ");
+                String name = scanner.nextLine();
+                Item item = new Item(name);
+                tracker.replace(id, item);
+                System.out.println("Item replaced!");
             } else {
                 System.out.println("Пользователь выбрал: " + select);
             }
+            Thread.sleep(3000);
         }
     }
 
@@ -58,6 +75,10 @@ public class StartUI {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Tracker tracker = new Tracker();
-        new StartUI().init(scanner, tracker);
+        try {
+            new StartUI().init(scanner, tracker);
+        } catch (InterruptedException e) {
+            System.out.println("Поток досрочно завершился, ибо я криворукий");
+        }
     }
 }
