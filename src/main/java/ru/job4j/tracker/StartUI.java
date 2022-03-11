@@ -11,12 +11,7 @@ public class StartUI {
             snowMenu();
             System.out.println("Select: ");
             int select;
-            try {
-                select = Integer.parseInt(scanner.nextLine());
-            } catch (NumberFormatException e) {
-                System.out.println("Введите именно число! ");
-                continue;
-            }
+            select = Integer.parseInt(scanner.nextLine());
             if (select == 6) {
                 run = false;
             } else if (select == 0) {
