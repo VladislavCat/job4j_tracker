@@ -33,13 +33,7 @@ public class StartUI {
                 System.out.println("--- Edit item ---");
                 System.out.println("Enter id: ");
                 int id;
-                try {
-                    id = scanner.nextInt();
-                    scanner.nextLine();
-                } catch (InputMismatchException e) {
-                    System.out.println("Id заявки состоит из чисел.");
-                    continue;
-                }
+                id = Integer.parseInt(scanner.nextLine());
                 System.out.print("Enter name: ");
                 String name = scanner.nextLine();
                 Item item = new Item(name);
