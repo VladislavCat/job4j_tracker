@@ -12,9 +12,7 @@ public class StartUI {
             System.out.println("Select: ");
             int select;
             select = Integer.parseInt(scanner.nextLine());
-            if (select == 6) {
-                run = false;
-            } else if (select == 0) {
+            if (select == 0) {
                 System.out.println("---Create item---");
                 System.out.println("Enter name: ");
                 String name = scanner.nextLine();
@@ -50,8 +48,8 @@ public class StartUI {
                 } else {
                     System.out.println("Ошибка замены заявки");
                 }
-            } else {
-                System.out.println("Пользователь выбрал: " + select);
+            } else if (select == 6) {
+                run = false;
             }
             Thread.sleep(2500);
         }
