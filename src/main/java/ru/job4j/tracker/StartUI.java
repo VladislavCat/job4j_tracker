@@ -32,8 +32,7 @@ public class StartUI {
             } else if (select == 2) {
                 System.out.println("--- Edit item ---");
                 System.out.println("Enter id: ");
-                int id;
-                id = Integer.parseInt(scanner.nextLine());
+                int id = Integer.parseInt(scanner.nextLine());
                 System.out.print("Enter name: ");
                 String name = scanner.nextLine();
                 Item item = new Item(name);
@@ -41,6 +40,15 @@ public class StartUI {
                     System.out.println("Заявка заменена");
                 } else {
                     System.out.println("Ошибка замены заявки");
+                }
+            } else if (select == 3) {
+                System.out.println("--- Delete item ---");
+                System.out.println("Enter id item: ");
+                int id = Integer.parseInt(scanner.nextLine());
+                if (tracker.delete(id)) {
+                    System.out.println("Заявка удалена.");
+                } else {
+                    System.out.println("Ошибка удаления заявки.");
                 }
             } else if (select == 6) {
                 run = false;
