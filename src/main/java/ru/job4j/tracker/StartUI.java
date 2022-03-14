@@ -2,14 +2,13 @@ package ru.job4j.tracker;
 
 public class StartUI {
 
-    public void init(Input input, Tracker tracker, UserAction[] actions) throws InterruptedException {
+    public void init(Input input, Tracker tracker, UserAction[] actions) {
         boolean run = true;
         while (run) {
             snowMenu(actions);
             int select = input.askInt("Select: ");
             UserAction action = actions[select];
             run = action.execute(input, tracker);
-            Thread.sleep(1500);
         }
     }
 
@@ -30,10 +29,6 @@ public class StartUI {
                 new FindItemById(), new FindItemsByName(),
                 new CloseProgramAction()
         };
-        try {
-            new StartUI().init(input, tracker, actions);
-        } catch (InterruptedException e) {
-            System.out.println("Поток досрочно завершился, ибо я криворукий");
-        }
+        new StartUI().init(input, tracker, actions);
     }
 }

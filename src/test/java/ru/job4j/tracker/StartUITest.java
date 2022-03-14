@@ -3,46 +3,49 @@ package ru.job4j.tracker;
 import org.junit.Assert;
 import org.junit.Test;
 
-
-import static org.hamcrest.core.Is.is;
-
 public class StartUITest {
 
     @Test
-    public void whenAddItem() {
-        String[] answers = {"Fix PC"};
+    public void whenCreateItem() {
+        Input in = new StubInput(
+                new String[] {"0", "Item name", "1"}
+        );
         Tracker tracker = new Tracker();
-        Input input = new StubInput(answers);
-        UserAction createItem = new CreateAction();
-        createItem.execute(input, tracker);
-        Item expected = new Item("Fix PC");
-        Item created = tracker.findAll()[0];
-        Assert.assertEquals(created.getName(), expected.getName());
+        UserAction[] actions = {
+                new CreateAction(),
+                new CloseProgramAction()
+        };
+        new StartUI().init(in, tracker, actions);
+        Assert.assertEquals(tracker.findAll()[0].getName(), "Item name");
     }
 
     @Test
-    public void whenEditItem() {
+    public void whenEditedItem() {
+        Input in = new StubInput(
+                new String[] {"0", "new item", "1", "1", "edited item", "2"}
+        );
         Tracker tracker = new Tracker();
-        Item item = new Item("new item");
-        tracker.add(item);
-        String[] answers = {
-                String.valueOf(item.getId()),
-                "edited item"
+        UserAction[] userAction = {
+                new CreateAction(),
+                new EditItemAction(),
+                new CloseProgramAction()
         };
-        UserAction editItem = new EditItemAction();
-        editItem.execute(new StubInput(answers), tracker);
-        Item edited = tracker.findById(item.getId());
-        Assert.assertEquals(edited.getName(), "edited item");
+        new StartUI().init(in, tracker, userAction);
+        Assert.assertEquals(tracker.findAll()[0].getName(), "edited item");
     }
 
     @Test
     public void whenDeleteItem() {
+        Input in = new StubInput(
+                new String[] {"0", "new item", "1", "1", "2"}
+        );
         Tracker tracker = new Tracker();
-        Item item = new Item("new item");
-        tracker.add(item);
-        UserAction delete = new DeleteItemAction();
-        String[] answers = {String.valueOf(item.getId())};
-        delete.execute(new StubInput(answers), tracker);
-        Assert.assertNull(null, tracker.findById(item.getId()));
+        UserAction[] userAction = {
+                new CreateAction(),
+                new DeleteItemAction(),
+                new CloseProgramAction()
+        };
+        new StartUI().init(in, tracker, userAction);
+        Assert.assertNull(null, tracker.findById(1));
     }
 }
