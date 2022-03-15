@@ -5,13 +5,10 @@ public class FindEl {
         int rsl = -1;
         for (int i = 0; i < value.length; i++) {
             if (value[i] != null && value[i].equals(key)) {
-                rsl = Integer.parseInt(value[i]);
+                return Integer.parseInt(value[i]);
             }
         }
-        if (rsl == -1) {
-            throw new ElementNotFoundException("Элемент не найден в массиве");
-        }
-        return rsl;
+        throw new ElementNotFoundException("Элемент не найден в массиве");
     }
 
     public static void main(String[] args) {
