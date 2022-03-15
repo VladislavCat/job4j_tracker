@@ -8,9 +8,4 @@ public class Square implements Shape {
                 + "|   |" + ln
                 + "-----" + ln;
     }
-
-    public static void main(String[] args) {
-        Square a = new Square();
-        System.out.println(a.draw());
-    }
 }
