@@ -20,7 +20,7 @@ public class StartUI {
     public void snowMenu(UserAction[] actions) {
         out.println("Menu:");
         for (int i = 0; i < actions.length; i++) {
-            System.out.println(i + ". " + actions[i].name());
+            out.println(i + ". " + actions[i].name());
         }
 
     }
