@@ -22,24 +22,26 @@ public class StartUITest {
     @Test
     public void whenEditedItem() {
         Input in = new StubInput(
-                new String[] {"0", "new item", "1", "1", "edited item", "2"}
+                new String[] {"1", "1", "Edited item", "2"}
         );
         Tracker tracker = new Tracker();
+        Item item = tracker.add(new Item("Replaced item"));
         UserAction[] userAction = {
                 new CreateAction(),
                 new EditItemAction(),
                 new CloseProgramAction()
         };
         new StartUI().init(in, tracker, userAction);
-        Assert.assertEquals(tracker.findAll()[0].getName(), "edited item");
+        Assert.assertEquals(tracker.findAll()[0].getName(), "Edited item");
     }
 
     @Test
     public void whenDeleteItem() {
         Input in = new StubInput(
-                new String[] {"0", "new item", "1", "1", "2"}
+                new String[] {"1", "1", "2"}
         );
         Tracker tracker = new Tracker();
+        Item item = tracker.add(new Item("Deleted item"));
         UserAction[] userAction = {
                 new CreateAction(),
                 new DeleteItemAction(),
