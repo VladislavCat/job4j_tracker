@@ -149,7 +149,7 @@ public class StartUITest {
         Item one = tracker.add(new Item("Err"));
         Item two = tracker.add(new Item("Sell"));
         Input in = new StubInput(
-                new String[] {"0", "2", "1"}
+                new String[] {"0", String.valueOf(two.getId()), "1"}
         );
         UserAction[] actions = {
                 new FindItemById(out),
