@@ -22,12 +22,11 @@ public class StartUITest {
     @Test
     public void whenEditedItem() {
         Input in = new StubInput(
-                new String[] {"1", "1", "Edited item", "2"}
+                new String[] {"0", "1", "Edited item", "1"}
         );
         Tracker tracker = new Tracker();
         Item item = tracker.add(new Item("Replaced item"));
         UserAction[] userAction = {
-                new CreateAction(),
                 new EditItemAction(),
                 new CloseProgramAction()
         };
@@ -38,12 +37,11 @@ public class StartUITest {
     @Test
     public void whenDeleteItem() {
         Input in = new StubInput(
-                new String[] {"1", "1", "2"}
+                new String[] {"0", "1", "1"}
         );
         Tracker tracker = new Tracker();
         Item item = tracker.add(new Item("Deleted item"));
         UserAction[] userAction = {
-                new CreateAction(),
                 new DeleteItemAction(),
                 new CloseProgramAction()
         };
