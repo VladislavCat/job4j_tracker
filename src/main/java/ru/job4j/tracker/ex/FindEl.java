@@ -5,7 +5,7 @@ public class FindEl {
         int rsl = -1;
         for (int i = 0; i < value.length; i++) {
             if (value[i] != null && value[i].equals(key)) {
-                return Integer.parseInt(value[i]);
+                return i;
             }
         }
         throw new ElementNotFoundException("Элемент не найден в массиве");
