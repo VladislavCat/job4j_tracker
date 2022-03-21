@@ -17,14 +17,14 @@ public class PhoneDictionaryTest {
         Assert.assertEquals(persons.get(0).getSurname(), "Arsentev");
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public void whenFindFalse() {
         PhoneDictionary phones = new PhoneDictionary();
         phones.add(
                 new Person("Petr", "Arsentev", "534872", "Bryansk")
         );
         ArrayList<Person> persons = phones.find("Alex");
-        String name = persons.get(0).getName();
+        Assert.assertEquals(persons.size(), 0);
     }
 
     @Test
