@@ -20,7 +20,7 @@ public class Item {
         this.name = name;
     }
 
-    public Item(String name, int id) {
+    public Item(int id, String name) {
         this.name = name;
         this.id = id;
     }
@@ -43,6 +43,10 @@ public class Item {
 
     public LocalDateTime getCreated() {
         return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
     }
 
     @Override
