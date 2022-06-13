@@ -38,99 +38,92 @@ public class SqlTracker implements Store, AutoCloseable {
 
     @Override
     public Item add(Item item) {
-        executeUpdateSQL("insert into items(name, created) values(\'"
-                + item.getName() + "\', \'" + Timestamp.valueOf(item.getCreated()) + "\')");
+        try (PreparedStatement ps = cn.prepareStatement("insert into items(name, created) values(?, ?)")) {
+            ps.setString(1, item.getName());
+            ps.setTimestamp(2, Timestamp.valueOf(item.getCreated()));
+            ps.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return item;
     }
 
     @Override
     public boolean replace(int id, Item item) {
-        return executeUpdateSQL(
-                "update items "
-                + "set name = '" + item.getName() + "', created = '"
-                + Timestamp.valueOf(item.getCreated())
-                + "' where id = " + id)
-                != 0;
-    }
-
-    @Override
-    public boolean delete(int id) {
-        return executeUpdateSQL(
-                "delete from items where id = " + String.valueOf(id)) != 0;
-    }
-
-    @Override
-    public List<Item> findAll() {
-        List<Item> items = new ArrayList<>();
-        ResultSet rs = executeQuery("select * from items");
-        if (rs != null) {
-            items = resultSetToList(rs);
-        }
-        return items;
-    }
-
-    @Override
-    public List<Item> findByName(String key) {
-        ResultSet rs = executeQuery("select * from items where name = '" + key + "'");
-        List<Item> items = new ArrayList<>();
-        if (rs != null) {
-            items = resultSetToList(rs);
-        }
-        return items;
-    }
-
-    @Override
-    public Item findById(int id) {
-        ResultSet rs = executeQuery("select * from items where id = " + id);
-        List<Item> items = new ArrayList<>();
-        Item item = new Item();
-        if (rs != null) {
-            items = resultSetToList(rs);
-        }
-        return items.size() > 0 ? items.get(0) : null;
-    }
-
-    private int executeUpdateSQL(String sql) {
-        int rsl = 0;
-        try (Statement statement = cn.createStatement()) {
-            rsl = statement.executeUpdate(sql);
+        boolean rsl = false;
+        try (PreparedStatement ps = cn.prepareStatement("update items set name = ?, "
+                + "created = ? where id = ?")) {
+            ps.setString(1, item.getName());
+            ps.setTimestamp(2, Timestamp.valueOf(item.getCreated()));
+            ps.setInt(3, id);
+            rsl = ps.executeUpdate() != 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return rsl;
     }
 
-    private ResultSet executeQuery(String sql) {
-        ResultSet resultSet = null;
-        try (Statement statement = cn.createStatement()) {
-             resultSet = statement.executeQuery(sql);
+    @Override
+    public boolean delete(int id) {
+        boolean rsl = false;
+        try (PreparedStatement ps = cn.prepareStatement("delete from items where id = ?")) {
+            ps.setInt(1, id);
+            rsl = ps.executeUpdate() != 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return resultSet;
+        return rsl;
     }
 
-    private List<Item> resultSetToList(ResultSet rs) {
+    @Override
+    public List<Item> findAll() {
         List<Item> items = new ArrayList<>();
-        Item item = new Item();
-        try {
-            if (rs != null) {
-                while (rs.next()) {
-                    for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
-                        if (i == 1) {
-                            item.setId(rs.getInt(i));
-                        } else if (i == 2) {
-                            item.setName(rs.getString(i));
-                        } else if (i == 3) {
-                            item.setCreated(rs.getTimestamp(i).toLocalDateTime());
-                        }
-                    }
-                    items.add(item);
-                    item = new Item();
-                }
+        try (PreparedStatement ps = cn.prepareStatement("select * from items")) {
+            try (ResultSet rs = ps.executeQuery()) {
+                items = resultSetToList(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return items;
+    }
+
+    @Override
+    public List<Item> findByName(String key) {
+        List<Item> items = new ArrayList<>();
+        try (PreparedStatement ps = cn.prepareStatement("select * from items where name = ?")) {
+            ps.setString(1, key);
+            try (ResultSet rs = ps.executeQuery()) {
+                items = resultSetToList(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return items;
+    }
+
+    @Override
+    public Item findById(int id) {
+        List<Item> items = new ArrayList<>();
+        try (PreparedStatement ps = cn.prepareStatement("select * from items where id = ?")) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                items = resultSetToList(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return items.size() > 0 ? items.get(0) : null;
+    }
+
+    private List<Item> resultSetToList(ResultSet rs) throws SQLException {
+        List<Item> items = new ArrayList<>();
+        while (rs.next()) {
+            items.add(new Item(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getTimestamp("created").toLocalDateTime()
+            ));
         }
         return items;
     }
