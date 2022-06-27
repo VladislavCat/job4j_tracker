@@ -37,10 +37,10 @@ public class StartUI {
     public static void main(String[] args) throws SQLException {
         Output output = new ConsoleOutput();
         Input input = new ValidateInput(output, new ConsoleInput());
-        Store tracker = new SqlTracker();
+        Store tracker = new MemTracker();
         List<UserAction> actions = new ArrayList<>(Arrays.asList(
-                new CreateAction(output), new FindAllAction(output),
-                new EditItemAction(output), new DeleteItemAction(output),
+                new CreateAction(output), new CreateItemXAction(output), new FindAllAction(output),
+                new EditItemAction(output), new DeleteItemAction(output), new DeleteItemXAction(output),
                 new FindItemById(output), new FindItemsByName(output),
                 new CloseProgramAction(output)
         ));
