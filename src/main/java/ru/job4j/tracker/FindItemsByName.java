@@ -16,7 +16,7 @@ public class FindItemsByName implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, Store tracker) throws SQLException {
+    public boolean execute(Input input, Store tracker) {
         out.println("--- Find items by name ---");
         String name = input.askStr("Enter name: ");
         List<Item> items = tracker.findByName(name);
