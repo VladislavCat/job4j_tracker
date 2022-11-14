@@ -15,7 +15,6 @@ import java.util.Properties;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 public class SqlTrackerTest {
 
@@ -45,7 +44,7 @@ public class SqlTrackerTest {
 
     @After
     public void wipeTable() throws SQLException {
-        try (PreparedStatement statement = connection.prepareStatement("delete from items")) {
+        try (PreparedStatement statement = connection.prepareStatement("TRUNCATE TABLE items RESTART IDENTITY")) {
             statement.execute();
         }
     }
@@ -65,6 +64,7 @@ public class SqlTrackerTest {
         Item itemReplace = new Item("ReplaceItem");
         tracker.add(item);
         tracker.replace(item.getId(), itemReplace);
+        itemReplace.setId(item.getId());
         assertThat(tracker.findById(item.getId()), is(itemReplace));
     }
 
