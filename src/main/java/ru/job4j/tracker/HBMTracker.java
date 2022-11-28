@@ -30,30 +30,32 @@ public class HBMTracker implements Store {
 
     @Override
     public boolean replace(int id, Item item) {
+        int i = 0;
         try (Session session = sf.openSession()) {
             session.beginTransaction();
-            session.createQuery("Update Item set name = :?fName where id = :fId")
+            i = session.createQuery("Update Item set name = :?fName where id = :fId")
                     .setParameter("fName", item.getName()).setParameter("fId", id)
                     .executeUpdate();
             session.getTransaction().commit();
-            return true;
         } catch (Exception e) {
-            return false;
+            e.printStackTrace();
         }
+        return i != 0;
     }
 
     @Override
     public boolean delete(int id) {
+        int i = 0;
         try (Session session = sf.openSession()) {
             session.beginTransaction();
-            session.createQuery("delete Item where id = :fId")
+            i = session.createQuery("delete Item where id = :fId")
                     .setParameter("fId", id)
                     .executeUpdate();
             session.getTransaction().commit();
-            return true;
         } catch (Exception e) {
-            return false;
+            e.printStackTrace();
         }
+        return i != 0;
     }
 
     @Override
@@ -61,10 +63,10 @@ public class HBMTracker implements Store {
         List<Item> itemList = new ArrayList<>();
         try (Session session = sf.openSession()) {
             session.beginTransaction();
-            Query query = session.createQuery("from Item");
-            for (Object o : query.list()) {
-                itemList.add((Item) o);
-            }
+            Query<Item> query = session.createQuery("from Item", Item.class);
+            itemList.addAll(query.list());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return itemList;
     }
@@ -74,10 +76,11 @@ public class HBMTracker implements Store {
         List<Item> itemList = new ArrayList<>();
         try (Session session = sf.openSession()) {
             session.beginTransaction();
-            Query query = session.createQuery("from Item where name like :fName").setParameter("fName", key);
-            for (Object o : query.list()) {
-                itemList.add((Item) o);
-            }
+            Query<Item> query = session.createQuery("from Item where name like :fName", Item.class)
+                    .setParameter("fName", key);
+            itemList.addAll(query.list());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return itemList;
     }
@@ -87,8 +90,9 @@ public class HBMTracker implements Store {
         Item item;
         try (Session session = sf.openSession()) {
             session.beginTransaction();
-            Query<Item> query = session.createQuery("from Item where id = :fId").setParameter("fId", id);
-            item = query.uniqueResultOptional().get();
+            Query<Item> query = session.createQuery("from Item where id = :fId", Item.class)
+                    .setParameter("fId", id);
+            item = query.uniqueResult();
         }
         return item;
     }
