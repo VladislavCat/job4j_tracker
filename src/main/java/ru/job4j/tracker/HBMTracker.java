@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class HBMTracker implements Store {
+public class HBMTracker implements Store, AutoCloseable {
     private final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
             .configure().build();
     private final SessionFactory sf = new MetadataSources(registry)
@@ -33,7 +33,7 @@ public class HBMTracker implements Store {
         int i = 0;
         try (Session session = sf.openSession()) {
             session.beginTransaction();
-            i = session.createQuery("Update Item set name = :?fName where id = :fId")
+            i = session.createQuery("Update Item set name = :fName where id = :fId")
                     .setParameter("fName", item.getName()).setParameter("fId", id)
                     .executeUpdate();
             session.getTransaction().commit();
@@ -95,5 +95,9 @@ public class HBMTracker implements Store {
             item = query.uniqueResult();
         }
         return item;
+    }
+
+    @Override
+    public void close() throws Exception {
     }
 }
