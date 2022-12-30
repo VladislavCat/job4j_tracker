@@ -23,21 +23,6 @@ import java.util.Properties;
 
 public class TrackerHbmTest {
 
-    @BeforeAll
-    public static void deleteAllValueInItems() {
-        StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
-                .configure().build();
-        SessionFactory sf = new MetadataSources(registry)
-                .buildMetadata().buildSessionFactory();
-        try (Session session = sf.openSession()) {
-            session.beginTransaction();
-            for (Item item : session.createQuery("from Item", Item.class).list()) {
-                session.delete(item);
-            }
-            session.getTransaction().commit();
-        }
-    }
-
     @Test
     public void whenAddNewItemThenTrackerHasSameItem() throws Exception {
         try (var tracker = new HBMTracker()) {
